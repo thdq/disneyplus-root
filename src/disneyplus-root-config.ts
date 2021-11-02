@@ -7,6 +7,13 @@ registerApplication({
   activeWhen: () => true,
 });
 
+registerApplication({
+  name: "@disneyplus/disneyplus-home",
+  app: () =>
+    System.import("@disneyplus/disneyplus-home"),
+  activeWhen: ['/'],
+});
+
 start({
   urlRerouteOnly: true,
 });
