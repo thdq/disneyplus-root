@@ -1,18 +1,24 @@
 import { registerApplication, start } from "single-spa";
+import {
+  constructApplications,
+  constructRoutes,
+  constructLayoutEngine,
+} from "single-spa-layout";
 
-registerApplication({
-  name: "@disneyplus/disneyplus-layout",
-  app: () =>
-    System.import("@disneyplus/disneyplus-layout"),
-  activeWhen: () => true,
-});
+import Layout from "./layout.html";
 
-registerApplication({
-  name: "@disneyplus/disneyplus-home",
-  app: () =>
-    System.import("@disneyplus/disneyplus-home"),
-  activeWhen: ['/'],
+const routes = constructRoutes(Layout);
+const applications = constructApplications({
+  routes,
+  loadApp({ name }) {
+    return System.import(name);
+  },
 });
+const layoutEngine = constructLayoutEngine({ routes, applications });
+
+applications.forEach(registerApplication);
+layoutEngine.activate();
+start();
 
 start({
   urlRerouteOnly: true,
