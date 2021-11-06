@@ -1,24 +1,17 @@
+// @ts-nocheck
 import { registerApplication, start } from "single-spa";
-import {
-  constructApplications,
-  constructRoutes,
-  constructLayoutEngine,
-} from "single-spa-layout";
 
-import Layout from "./layout.html";
-
-const routes = constructRoutes(Layout);
-const applications = constructApplications({
-  routes,
-  loadApp({ name }) {
-    return System.import(name);
-  },
+registerApplication({
+  name: "@disneyplus/disneyplus-layout",
+  app: async () => await System.import('@disneyplus/disneyplus-layout'),
+  activeWhen: ["/"],
 });
-const layoutEngine = constructLayoutEngine({ routes, applications });
 
-applications.forEach(registerApplication);
-layoutEngine.activate();
-start();
+registerApplication({
+  name: "@disneyplus/disneyplus-home",
+  app: () => import(/* webpackIgnore: true */ 'http://localhost:9002/src/main.ts'),
+  activeWhen: ["/home"],
+});
 
 start({
   urlRerouteOnly: true,
