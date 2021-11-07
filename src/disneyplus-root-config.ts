@@ -13,6 +13,12 @@ registerApplication({
   activeWhen: ["/home"],
 });
 
+registerApplication({
+  name: "@disneyplus/disneyplus-brand",
+  app: () => System.import('@disneyplus/disneyplus-brand'),
+  activeWhen: ["/brand"],
+});
+
 start({
   urlRerouteOnly: true,
 });
